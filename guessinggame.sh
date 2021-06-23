@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
+# File: guessinggame.sh
+# Peer graded assignment for Coursera/The Unix Workbench
 
-echo "Welcome to Guessing Game"
+count=$(ls -1 | wc -l)
 
-function askFromUser {
-	echo -e "\nGuess the numbr of files in this directory : "
-	read guess
-	numberofFiles=$(ls -1 | wc -l)
+function correct_guess {        # One function...
+    if [[ $1 -lt $2 ]]          # One if statement ...
+    then
+	echo "Too low!"
+    elif [[ $1 -gt $2 ]]
+    then
+	echo "Too high!"
+    else
+	echo ""
+	echo "Congratualations! You guessed right!"
+    fi
 }
 
-askFromUser
-
-while [[ $guess -ne $numberofFiles ]]; do
-	if [[ $guess -lt $numberofFiles ]]; then
-		echo -e "\nNo way... higher than that!"
-	else
-		echo -e "\nNope... below that!"
-	fi
-	askFromUser
+while [[ $count -ne $guess ]]    # One loop...
+do
+    read -p "Guess how many files are in the current directory? " guess
+    echo $(correct_guess $guess $count)
+    echo ""
 done
-
-echo -e " \nCongratulations! you guess right!"
-echo -e " \n----------------------- \n" && ls -p | grep -v / | less
